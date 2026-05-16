@@ -7,6 +7,7 @@
     <title>House App</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
   </head>
   <body>
     <main class="app">
@@ -15,6 +16,15 @@
         alt="House"
         class="house-image"
       />
+
+      <section class="distance-card" aria-live="polite">
+        <div class="distance-header">
+          <span class="live-dot" aria-hidden="true"></span>
+          <p class="distance-title">Live distance to Tchernichovsky 68</p>
+        </div>
+        <p id="distance-value" class="distance-value">--</p>
+        <p id="distance-status" class="distance-status">Waiting for GPS signal...</p>
+      </section>
     </main>
 
     <script>
