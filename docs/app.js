@@ -446,7 +446,7 @@ function renderResetControl() {
     "beforeend",
     `
       <div class="reset-wrap">
-        <button id="reset-progress-btn" class="reset-button" type="button">Reset</button>
+        <button id="reset-progress-btn" class="reset-button" type="button">Reset Game</button>
       </div>
     `,
   );
