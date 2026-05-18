@@ -286,6 +286,43 @@ body {
   margin-bottom: 0.35rem;
 }
 
+.reset-wrap {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(0.9rem + env(safe-area-inset-bottom));
+  width: min(94vw, 760px);
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.reset-button {
+  pointer-events: auto;
+  margin-left: auto;
+  display: block;
+  border: 1px solid rgba(148, 163, 184, 0.42);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #475569;
+  font-family: "Rubik", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+
+.reset-button:hover {
+  transform: translateY(-1px);
+  background: #fff;
+  color: #1f2937;
+}
+
+.reset-button:active {
+  transform: translateY(1px);
+}
+
 @media (min-width: 700px) {
   .screen--game {
     max-width: 640px;

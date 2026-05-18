@@ -441,6 +441,30 @@ function renderCompletedScreen() {
   `;
 }
 
+function renderResetControl() {
+  appRoot.insertAdjacentHTML(
+    "beforeend",
+    `
+      <div class="reset-wrap">
+        <button id="reset-progress-btn" class="reset-button" type="button">Reset</button>
+      </div>
+    `,
+  );
+}
+
+function resetGameProgress() {
+  localStorage.removeItem(STORAGE_KEY);
+  appState = {
+    screen: APP_STATE.LOGIN,
+    activeStationId: null,
+    navigationStartTimestamp: null,
+  };
+  currentCoords = null;
+  stopGeolocationTracking();
+  clearLiveTimers();
+  render();
+}
+
 function render() {
   if (!appRoot) {
     return;
@@ -455,20 +479,24 @@ function render() {
     } else {
       renderLoadingScreen();
     }
+    renderResetControl();
     return;
   }
 
   if (appState.screen === APP_STATE.LOGIN) {
     renderLoginScreen();
+    renderResetControl();
     return;
   }
 
   if (appState.screen === APP_STATE.COMPLETED) {
     renderCompletedScreen();
+    renderResetControl();
     return;
   }
 
   renderGameScreen();
+  renderResetControl();
   startLiveUpdates();
 }
 
@@ -584,6 +612,21 @@ function bindEvents() {
     if (input.name === "code") {
       const errorId = input.closest("form")?.id === "arrival-form" ? "arrival-error" : "completion-error";
       setFormError(errorId, "");
+    }
+  });
+
+  appRoot.addEventListener("click", function (event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (target.id !== "reset-progress-btn") {
+      return;
+    }
+
+    if (window.confirm("Reset all progress and start over?")) {
+      resetGameProgress();
     }
   });
 
