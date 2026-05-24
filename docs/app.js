@@ -309,6 +309,20 @@ function extractYouTubeId(value) {
 }
 
 function getYouTubeEmbedUrl(value) {
+  try {
+    const parsedUrl = new URL(value, window.location.href);
+    const hostname = parsedUrl.hostname.toLowerCase();
+
+    if (hostname.endsWith("youtube.com")) {
+      const playlistId = parsedUrl.searchParams.get("list");
+      if (parsedUrl.pathname === "/playlist" && playlistId) {
+        return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(playlistId)}`;
+      }
+    }
+  } catch (error) {
+    return null;
+  }
+
   const id = extractYouTubeId(value);
   if (!id) {
     return null;
