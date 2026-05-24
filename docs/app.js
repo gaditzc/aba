@@ -1,6 +1,5 @@
 const CONFIG_URL = "./config.json?t=" + Date.now();
 const STORAGE_KEY = "amazing-race-game-state-v1";
-const DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS = 20000;
 
 const APP_STATE = {
   LOADING: "loading",
@@ -74,9 +73,7 @@ function validateConfig(rawConfig) {
     throw new Error("Missing stations.");
   }
 
-  const arrivalDistanceThresholdMeters = Number.isFinite(rawConfig.arrival_distance_threshold_meters)
-    ? rawConfig.arrival_distance_threshold_meters
-    : DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS;
+  const arrivalDistanceThresholdMeters = rawConfig.arrival_distance_threshold_meters;
 
   if (!Number.isFinite(arrivalDistanceThresholdMeters) || arrivalDistanceThresholdMeters <= 0) {
     throw new Error("arrival_distance_threshold_meters must be a positive number.");
@@ -147,10 +144,6 @@ function validateConfig(rawConfig) {
 }
 
 function getArrivalDistanceThresholdMeters() {
-  if (!gameConfig || !Number.isFinite(gameConfig.arrival_distance_threshold_meters)) {
-    return DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS;
-  }
-
   return gameConfig.arrival_distance_threshold_meters;
 }
 
