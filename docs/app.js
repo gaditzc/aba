@@ -1,5 +1,6 @@
 const CONFIG_URL = "./config.json?t=" + Date.now();
 const STORAGE_KEY = "amazing-race-game-state-v1";
+const DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS = 20000;
 
 const APP_STATE = {
   LOADING: "loading",
@@ -73,6 +74,14 @@ function validateConfig(rawConfig) {
     throw new Error("Missing stations.");
   }
 
+  const arrivalDistanceThresholdMeters = Number.isFinite(rawConfig.arrival_distance_threshold_meters)
+    ? rawConfig.arrival_distance_threshold_meters
+    : DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS;
+
+  if (!Number.isFinite(arrivalDistanceThresholdMeters) || arrivalDistanceThresholdMeters <= 0) {
+    throw new Error("arrival_distance_threshold_meters must be a positive number.");
+  }
+
   const stations = rawConfig.stations.map(function (station, index) {
     const requiredStringFields = ["clue_text", "arrival_code", "completion_code"];
     requiredStringFields.forEach(function (field) {
@@ -132,8 +141,17 @@ function validateConfig(rawConfig) {
 
   return {
     login_password: rawConfig.login_password,
+    arrival_distance_threshold_meters: arrivalDistanceThresholdMeters,
     stations: stations,
   };
+}
+
+function getArrivalDistanceThresholdMeters() {
+  if (!gameConfig || !Number.isFinite(gameConfig.arrival_distance_threshold_meters)) {
+    return DEFAULT_ARRIVAL_DISTANCE_THRESHOLD_METERS;
+  }
+
+  return gameConfig.arrival_distance_threshold_meters;
 }
 
 async function loadConfig() {
@@ -662,6 +680,27 @@ function handleLoginSubmit(form) {
 function handleArrivalSubmit(form) {
   const station = getCurrentStation();
   if (!station) {
+    return;
+  }
+
+  if (!currentCoords) {
+    setFormError("arrival-error", "Waiting for GPS signal before arrival check.");
+    return;
+  }
+
+  const distanceMeters = haversineDistanceMeters(
+    currentCoords.latitude,
+    currentCoords.longitude,
+    station.target_lat,
+    station.target_lon,
+  );
+  const maxDistanceMeters = getArrivalDistanceThresholdMeters();
+
+  if (distanceMeters > maxDistanceMeters) {
+    setFormError(
+      "arrival-error",
+      `Too far from station. Come within ${formatDistanceMeters(maxDistanceMeters)} (current ${formatDistanceMeters(distanceMeters)}).`,
+    );
     return;
   }
 
