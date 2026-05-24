@@ -19,7 +19,19 @@
         },
         {
           "step_type": "youtube",
-          "content": "https://www.youtube.com/playlist?list=PLg_UA3UP6i93feBNMA4y6obRPMAYXnfe4"
+          "content": "https://youtu.be/4gIpfB049O0"
+        },
+        {
+          "step_type": "youtube",
+          "content": "https://youtu.be/6j7ZsbFO55U"
+        },
+        {
+          "step_type": "youtube",
+          "content": "https://youtu.be/Fsrw81vRw5k"
+        },
+        {
+          "step_type": "youtube",
+          "content": "https://youtu.be/jvBm4s7Xthc"
         }
       ],
       "completion_code": "SKYHIGH"
