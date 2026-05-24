@@ -252,6 +252,25 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function formatTextWithClickableLinks(value) {
+  const textValue = String(value || "");
+  const parts = textValue.split(/(https?:\/\/[^\s]+)/g);
+
+  const html = parts
+    .map(function (part, index) {
+      const isUrlPart = index % 2 === 1;
+      if (!isUrlPart) {
+        return escapeHtml(part);
+      }
+
+      const escapedUrl = escapeHtml(part);
+      return `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">${escapedUrl}</a>`;
+    })
+    .join("");
+
+  return html.replace(/\n/g, "<br />");
+}
+
 function isValidVideoUrl(value) {
   try {
     const parsedUrl = new URL(value, window.location.href);
@@ -344,14 +363,14 @@ function renderMissionBody(station) {
           `;
         }
 
-        return `<p class="${getStoryTextClass(step.content)} mission-step mission-step--text">${escapeHtml(step.content)}</p>`;
+        return `<p class="${getStoryTextClass(step.content)} mission-step mission-step--text">${formatTextWithClickableLinks(step.content)}</p>`;
       })
       .join("");
 
     return `<div class="mission-steps">${stepsMarkup}</div>`;
   }
 
-  return `<p class="${getStoryTextClass(station.mission_text)}">${escapeHtml(station.mission_text)}</p>`;
+  return `<p class="${getStoryTextClass(station.mission_text)}">${formatTextWithClickableLinks(station.mission_text)}</p>`;
 }
 
 function setText(id, value) {
@@ -545,7 +564,7 @@ function renderGameScreen() {
   const errorId = isNavigation ? "arrival-error" : "completion-error";
   const buttonText = isNavigation ? "Confirm Arrival" : "Submit Completion Code";
   const storyMarkup = isNavigation
-    ? `<p class="${getStoryTextClass(station.clue_text)}">${escapeHtml(station.clue_text)}</p>`
+    ? `<p class="${getStoryTextClass(station.clue_text)}">${formatTextWithClickableLinks(station.clue_text)}</p>`
     : renderMissionBody(station);
 
   appRoot.innerHTML = `
