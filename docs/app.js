@@ -396,6 +396,19 @@ function setTimerValue(value) {
   setText("timer-value", value);
 }
 
+function setArrivalCodeWindow(visible, passcode) {
+  const windowElement = document.getElementById("arrival-code-window");
+  if (!windowElement) {
+    return;
+  }
+
+  windowElement.classList.toggle("is-visible", Boolean(visible));
+  const codeElement = document.getElementById("arrival-code-value");
+  if (codeElement) {
+    codeElement.textContent = visible ? passcode : "";
+  }
+}
+
 function setFormError(id, message) {
   setText(id, message);
 }
@@ -479,11 +492,14 @@ function updateLiveHeader() {
 
     if (appState.screen === APP_STATE.NAVIGATION && distanceMeters <= maxDistanceMeters) {
       setLiveStatus(`You are within range. Arrival passcode: ${station.arrival_code}`, false);
+      setArrivalCodeWindow(true, station.arrival_code);
     } else if (!document.getElementById("distance-status")?.classList.contains("is-error")) {
       setLiveStatus("Live GPS tracking is active.", false);
+      setArrivalCodeWindow(false, "");
     }
   } else {
     setDistanceValue("--");
+    setArrivalCodeWindow(false, "");
     if (!document.getElementById("distance-status")?.textContent) {
       setLiveStatus("Waiting for GPS signal...", false);
     }
@@ -588,6 +604,14 @@ function renderGameScreen() {
         <p class="eyebrow">${heading}</p>
         ${storyMarkup}
       </section>
+
+      ${isNavigation
+        ? `<section id="arrival-code-window" class="panel arrival-code-window" aria-live="polite">
+            <p class="eyebrow">Arrival Passcode Unlocked</p>
+            <p class="arrival-code-text">Type this code in the field below:</p>
+            <p id="arrival-code-value" class="arrival-code-value"></p>
+          </section>`
+        : ""}
 
       <form id="${formId}" class="panel action-panel" novalidate>
         <label class="field-label" for="${inputId}">${label}</label>

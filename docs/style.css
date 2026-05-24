@@ -238,6 +238,31 @@ body {
   padding: 1.1rem;
 }
 
+.arrival-code-window {
+  display: none;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(234, 88, 12, 0.35);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 247, 237, 0.95) 100%);
+}
+
+.arrival-code-window.is-visible {
+  display: block;
+}
+
+.arrival-code-text {
+  margin-top: 0.45rem;
+  color: #334155;
+}
+
+.arrival-code-value {
+  margin-top: 0.55rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.25rem, 4.2vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #7c2d12;
+}
+
 .story-text {
   margin-top: 0.55rem;
   line-height: 1.75;
