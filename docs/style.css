@@ -271,6 +271,17 @@ body {
   word-break: break-word;
 }
 
+.inline-content-image {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 0.75rem auto;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
 .story-text--rtl {
   direction: rtl;
   text-align: right;

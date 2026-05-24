@@ -263,7 +263,12 @@ function formatTextWithClickableLinks(value) {
         return escapeHtml(part);
       }
 
+      const isImageUrl = /\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(part);
       const escapedUrl = escapeHtml(part);
+      if (isImageUrl) {
+        return `<img class="inline-content-image" src="${escapedUrl}" alt="Clue image" loading="lazy" />`;
+      }
+
       return `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">${escapedUrl}</a>`;
     })
     .join("");
