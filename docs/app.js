@@ -616,7 +616,7 @@ function renderGameScreen() {
   const inputId = isNavigation ? "arrival-passcode" : "completion-passcode";
   const formId = isNavigation ? "arrival-form" : "completion-form";
   const errorId = isNavigation ? "arrival-error" : "completion-error";
-  const buttonText = isNavigation ? "אישור הגעה" : "שלח";
+  const buttonText = "שלח";
   const storyMarkup = isNavigation
     ? `<p class="${getStoryTextClass(station.clue_text)}">${formatTextWithClickableLinks(station.clue_text)}</p>`
     : renderMissionBody(station);
