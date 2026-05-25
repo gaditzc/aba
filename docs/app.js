@@ -16,7 +16,6 @@ let gameConfig = null;
 let appState = loadSavedState();
 let currentCoords = null;
 let geolocationWatchId = null;
-let uiTickId = null;
 let configLoadError = "";
 
 function loadSavedState() {
@@ -26,7 +25,6 @@ function loadSavedState() {
       return {
         screen: APP_STATE.LOGIN,
         activeStationId: null,
-        navigationStartTimestamp: null,
       };
     }
 
@@ -34,15 +32,11 @@ function loadSavedState() {
     return {
       screen: typeof parsed.screen === "string" ? parsed.screen : APP_STATE.LOGIN,
       activeStationId: Number.isFinite(parsed.activeStationId) ? parsed.activeStationId : null,
-      navigationStartTimestamp: Number.isFinite(parsed.navigationStartTimestamp)
-        ? parsed.navigationStartTimestamp
-        : null,
     };
   } catch (error) {
     return {
       screen: APP_STATE.LOGIN,
       activeStationId: null,
-      navigationStartTimestamp: null,
     };
   }
 }
@@ -183,19 +177,6 @@ function getStationIndex(stationId) {
 
 function isGameplayScreen(screen) {
   return screen === APP_STATE.NAVIGATION || screen === APP_STATE.MISSION;
-}
-
-function formatElapsedTime(milliseconds) {
-  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  if (hours > 0) {
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-  }
-
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 function formatDistanceMeters(distanceMeters) {
@@ -411,10 +392,6 @@ function setDistanceValue(value) {
   setText("distance-value", value);
 }
 
-function setTimerValue(value) {
-  setText("timer-value", value);
-}
-
 function setArrivalCodeWindow(visible, passcode) {
   const windowElement = document.getElementById("arrival-code-window");
   if (!windowElement) {
@@ -430,13 +407,6 @@ function setArrivalCodeWindow(visible, passcode) {
 
 function setFormError(id, message) {
   setText(id, message);
-}
-
-function clearLiveTimers() {
-  if (uiTickId !== null) {
-    window.clearInterval(uiTickId);
-    uiTickId = null;
-  }
 }
 
 function stopGeolocationTracking() {
@@ -493,12 +463,6 @@ function updateLiveHeader() {
     return;
   }
 
-  if (Number.isFinite(appState.navigationStartTimestamp)) {
-    setTimerValue(formatElapsedTime(Date.now() - appState.navigationStartTimestamp));
-  } else {
-    setTimerValue("00:00");
-  }
-
   if (currentCoords) {
     const distanceMeters = haversineDistanceMeters(
       currentCoords.latitude,
@@ -526,8 +490,6 @@ function updateLiveHeader() {
 }
 
 function startLiveUpdates() {
-  clearLiveTimers();
-  uiTickId = window.setInterval(updateLiveHeader, 1000);
   updateLiveHeader();
   startGeolocationTracking();
 }
@@ -584,7 +546,6 @@ function renderGameScreen() {
     appState = {
       screen: APP_STATE.LOGIN,
       activeStationId: null,
-      navigationStartTimestamp: null,
     };
     saveState();
     render();
@@ -605,10 +566,6 @@ function renderGameScreen() {
   appRoot.innerHTML = `
     <section class="screen screen--game">
       <header class="game-header" aria-label="Live navigation status">
-        <div class="metric-card">
-          <span class="metric-label">זמן שחלף</span>
-          <span id="timer-value" class="metric-value">00:00</span>
-        </div>
         <div class="metric-card">
           <div class="metric-label-row">
             <span class="live-dot" aria-hidden="true"></span>
@@ -681,11 +638,9 @@ function resetGameProgress() {
   appState = {
     screen: APP_STATE.LOGIN,
     activeStationId: null,
-    navigationStartTimestamp: null,
   };
   currentCoords = null;
   stopGeolocationTracking();
-  clearLiveTimers();
   render();
 }
 
@@ -695,7 +650,6 @@ function render() {
   }
 
   stopGeolocationTracking();
-  clearLiveTimers();
 
   if (!gameConfig) {
     if (configLoadError) {
@@ -735,7 +689,6 @@ function handleLoginSubmit(form) {
   appState = {
     screen: APP_STATE.NAVIGATION,
     activeStationId: gameConfig.stations[0].station_id,
-    navigationStartTimestamp: Date.now(),
   };
   saveState();
   currentCoords = null;
@@ -802,7 +755,6 @@ function handleCompletionSubmit(form) {
     appState = {
       screen: APP_STATE.COMPLETED,
       activeStationId: station.station_id,
-      navigationStartTimestamp: appState.navigationStartTimestamp,
     };
     saveState();
     render();
@@ -813,7 +765,6 @@ function handleCompletionSubmit(form) {
   appState = {
     screen: APP_STATE.NAVIGATION,
     activeStationId: nextStation.station_id,
-    navigationStartTimestamp: Date.now(),
   };
   saveState();
   currentCoords = null;
@@ -886,9 +837,6 @@ function bindEvents() {
       appState = {
         screen: typeof nextState.screen === "string" ? nextState.screen : APP_STATE.LOGIN,
         activeStationId: Number.isFinite(nextState.activeStationId) ? nextState.activeStationId : null,
-        navigationStartTimestamp: Number.isFinite(nextState.navigationStartTimestamp)
-          ? nextState.navigationStartTimestamp
-          : null,
       };
       render();
     } catch (error) {
@@ -921,7 +869,6 @@ async function init() {
       appState = {
         screen: APP_STATE.LOGIN,
         activeStationId: null,
-        navigationStartTimestamp: null,
       };
       saveState();
     }
