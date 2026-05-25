@@ -612,7 +612,6 @@ function renderGameScreen() {
   }
 
   const isNavigation = appState.screen === APP_STATE.NAVIGATION;
-  const heading = isNavigation ? "מצב ניווט" : "";
   const inputId = isNavigation ? "arrival-passcode" : "completion-passcode";
   const formId = isNavigation ? "arrival-form" : "completion-form";
   const errorId = isNavigation ? "arrival-error" : "completion-error";
@@ -631,7 +630,6 @@ function renderGameScreen() {
       </header>
 
       <section class="panel story-panel" aria-live="polite">
-        ${heading ? `<p class="eyebrow">${heading}</p>` : ""}
         ${storyMarkup}
       </section>
 
