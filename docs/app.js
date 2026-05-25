@@ -592,7 +592,7 @@ function renderGameScreen() {
   }
 
   const isNavigation = appState.screen === APP_STATE.NAVIGATION;
-  const heading = isNavigation ? "מצב ניווט" : "מצב משימה";
+  const heading = isNavigation ? "מצב ניווט" : "תיאור המשימה";
   const label = isNavigation ? "קוד הגעה" : "קוד סיום";
   const inputId = isNavigation ? "arrival-passcode" : "completion-passcode";
   const formId = isNavigation ? "arrival-form" : "completion-form";
