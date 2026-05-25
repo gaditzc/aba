@@ -29,6 +29,7 @@ body {
 body {
   color: var(--ink);
   font-family: "Rubik", sans-serif;
+  direction: rtl;
   background:
     radial-gradient(circle at 14% 12%, rgba(251, 146, 60, 0.3), transparent 36%),
     radial-gradient(circle at 84% 8%, rgba(249, 115, 22, 0.2), transparent 28%),
@@ -109,6 +110,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--brand-strong);
+  text-align: right;
 }
 
 .hero-title {
@@ -116,12 +118,14 @@ body {
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(1.5rem, 4.6vw, 2.25rem);
   line-height: 1.15;
+  text-align: right;
 }
 
 .body-copy {
   margin-top: 0.55rem;
   color: var(--ink-soft);
   line-height: 1.6;
+  text-align: right;
 }
 
 .login-panel {
@@ -169,13 +173,14 @@ body {
   color: #334155;
   font-size: 0.9rem;
   font-weight: 600;
+  text-align: right;
 }
 
 .field-error {
   min-height: 1.1rem;
   color: var(--danger);
   font-size: 0.88rem;
-  text-align: center;
+  text-align: right;
 }
 
 .game-header {
@@ -202,6 +207,8 @@ body {
 .metric-label-row {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
   gap: 0.42rem;
 }
 
@@ -227,6 +234,7 @@ body {
   display: block;
   color: #64748b;
   font-size: 0.88rem;
+  text-align: right;
 }
 
 .metric-subtle.is-error {
@@ -269,6 +277,7 @@ body {
   color: #334155;
   white-space: pre-wrap;
   word-break: break-word;
+  text-align: right;
 }
 
 .inline-content-image {
