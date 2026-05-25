@@ -613,7 +613,6 @@ function renderGameScreen() {
 
   const isNavigation = appState.screen === APP_STATE.NAVIGATION;
   const heading = isNavigation ? "מצב ניווט" : "";
-  const label = isNavigation ? "קוד הגעה" : "קוד סיום";
   const inputId = isNavigation ? "arrival-passcode" : "completion-passcode";
   const formId = isNavigation ? "arrival-form" : "completion-form";
   const errorId = isNavigation ? "arrival-error" : "completion-error";
@@ -642,14 +641,12 @@ function renderGameScreen() {
 
       ${isNavigation
         ? `<section id="arrival-code-window" class="panel arrival-code-window" aria-live="polite">
-            <p class="eyebrow">קוד הגעה נחשף</p>
-            <p class="arrival-code-text">הקלידו את הקוד בשדה למטה:</p>
             <p id="arrival-code-value" class="arrival-code-value"></p>
           </section>`
         : ""}
 
       <form id="${formId}" class="panel action-panel" novalidate>
-        ${isNavigation ? `<label class="field-label" for="${inputId}">${label}</label>` : ""}
+        <label class="field-label" for="${inputId}">הקלידו את הקוד בשדה למטה:</label>
         <input
           id="${inputId}"
           name="code"
