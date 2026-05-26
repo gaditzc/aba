@@ -593,7 +593,7 @@ function renderLoginScreen() {
           required
         />
         <p id="login-error" class="field-error" role="alert"></p>
-        <button type="submit" aria-label="אישור" style="position:absolute;left:-9999px;opacity:0;pointer-events:none;">אישור</button>
+        <button type="submit" aria-label="אישור" style="display:none;">אישור</button>
       </form>
     </section>
   `;
