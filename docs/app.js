@@ -667,6 +667,7 @@ function renderCompletedScreen() {
         <p class="eyebrow">המשחק הושלם</p>
         <h1 class="hero-title">כל הכבוד!</h1>
         <p class="body-copy">סיימתם את סביקוב.</p>
+        <img src="./couple.png" alt="" class="completion-photo" />
       </div>
     </section>
   `;
