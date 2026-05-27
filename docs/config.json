@@ -6,7 +6,7 @@
       "station_id": 1,
       "target_lat": 31.7395886,
       "target_lon": 35.2068055,
-      "clue_text": "עליכם להגיע לגבעת המטוס, שם תתחיל המשימה הראשונה של המרוץ לשמונים\n\nקישור למיקום בגוגל מפות: https://maps.google.com/?q=31.7395886,35.2068055\n\nכשתגיעו למקום יחשף לכם קוד- הזינו אותו למטה",
+      "clue_text": "https://maps.google.com/?q=31.7395886,35.2068055",
       "clue_video": "./station1_clue.mp4",
       "arrival_code": "PILOT80",
       "mission_steps": [
